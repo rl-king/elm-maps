@@ -200,5 +200,5 @@ transformationStyle mapWidth mapHeight transforms =
   in
     [ ("transform-origin", toString (mapWidth/2)++"px "++toString (mapHeight/2)++"px")
     , ("transform", style)
-    , ( "pointer-events", "none" )
+    , ("pointer-events", "none")
     ]

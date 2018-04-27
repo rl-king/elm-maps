@@ -118,7 +118,7 @@ decodeOffset =
         (Json.field "pageX" Json.float)
         (Json.at ["target", "offsetLeft"] Json.float))
       (Json.map2 (-) 
-      (Json.field "pageY" Json.float)
+        (Json.field "pageY" Json.float)
         (Json.at ["target", "offsetTop"] Json.float))
   in
     Json.oneOf
