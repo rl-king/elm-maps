@@ -114,8 +114,12 @@ decodeOffset : Json.Decoder Offset
 decodeOffset =
   let
     xy = Json.map2 Offset
-      (Json.field "clientX" Json.float)
-      (Json.field "clientY" Json.float)
+      (Json.map2 (-) 
+        (Json.field "pageX" Json.float)
+        (Json.at ["target", "offsetLeft"] Json.float))
+      (Json.map2 (-) 
+      (Json.field "pageY" Json.float)
+        (Json.at ["target", "offsetTop"] Json.float))
   in
     Json.oneOf
       [ xy
@@ -138,9 +142,6 @@ scrollToZoom scroll =
 decodeTwoFingers : Json.Decoder (Maybe TwoFingers)
 decodeTwoFingers =
   let
-    xy = Json.map2 Offset
-      (Json.field "clientX" Json.float)
-      (Json.field "clientY" Json.float)
     twoFingers first second =
       TwoFingers
         (((first.x - second.x)^2 + (first.y - second.y)^2)^0.5)
@@ -148,5 +149,5 @@ decodeTwoFingers =
   in
     Json.maybe
     <| Json.map2 twoFingers
-      (Json.at ["touches", "0"] xy)
-      (Json.at ["touches", "1"] xy)
+      (Json.at ["touches", "0"] decodeOffset)
+      (Json.at ["touches", "1"] decodeOffset)
